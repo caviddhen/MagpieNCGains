@@ -2,6 +2,7 @@
 #' @description writes csv files based on MAgPIE nc outputs
 #' @return writes csv and returns a dataframe
 #' @param file file to convert
+#' @param check TRUE aggregates to global for each year and variable to compare against raw data (rasters)
 #' @author David Chen
 #' @importFrom  raster brick stack raster
 #' @importFrom ncdf4 nc_open ncvar_get
@@ -13,7 +14,7 @@
 #' @importFrom tibble rownames_to_column
 #' @export
 
-nc2gains <- function(file){
+nc2gains <- function(file, check = TRUE){
 
 #getmapping
 mapping <- as.data.frame(read_xlsx(system.file("extdata", "GAINS_share.xlsx", package="MagpieNCGains")))
@@ -49,6 +50,8 @@ df <- as.data.frame(df)
 df <- aggregate(df$split, by=list(year=df$year, variable=df$variable,Idregions=df$Idregions), FUN=sum)
 colnames(df)[4] <- "value"
 
+
+if (check ==TRUE) {
 #check with original rasters
 checka <- as.data.frame(cellStats(b, sum))
 checka <- rownames_to_column(checka)
@@ -56,11 +59,12 @@ checka <- rownames_to_column(checka)
   checka[,1] <- sub("\\.", "_", checka[,1])
 checka <- separate(checka, col="rowname", into=c("year", "variable"), sep="_")
 colnames(checka)[3] <- "original"
-checkb <- aggregate(df$value, by=list(year=df$year, variable=df$variable), FUN=sum)
-check <- inner_join(checka,checkb, by=c("year","variable")) %>%
-  mutate(diff = ((check$x - check$original)/check$original*100))
-avg_diff <- mean(check$diff)
+checkb <- aggregate(df$value, by=list(year=df$year, variable=df$variable), FUN=sum,na.rm=T)
+check <- inner_join(checka,checkb, by=c("year","variable"))
+check <- mutate(check, diff = ((check$x - check$original)/check$original*100))
+avg_diff <- mean(check$diff,na.rm=T)
 cat(paste0("Difference in global total by year and by variable is average ", round(avg_diff,2),"%"))
+}
 #save as file.csv
 write.csv(df, file=paste0(gsub("(.*?)\\..*", "\\1", file),"_GAINS",".csv"))
 return(df)
