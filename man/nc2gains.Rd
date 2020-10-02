@@ -4,10 +4,12 @@
 \alias{nc2gains}
 \title{nc2gains}
 \usage{
-nc2gains(file)
+nc2gains(file, check = TRUE)
 }
 \arguments{
 \item{file}{file to convert}
+
+\item{check}{TRUE aggregates to global for each year and variable to compare against raw data (rasters)}
 }
 \value{
 writes csv and returns a dataframe

@@ -4,12 +4,13 @@
 #' @param file file to convert
 #' @param check TRUE aggregates to global for each year and variable to compare against raw data (rasters)
 #' @author David Chen
-#' @importFrom  raster brick stack raster
+#' @importFrom  raster brick stack raster cellStats
 #' @importFrom ncdf4 nc_open ncvar_get
 #' @importFrom  readxl read_xlsx
 #' @importFrom dplyr inner_join mutate
 #' @importFrom tidyr pivot_longer separate
 #' @importFrom methods as
+#' @importFrom stats aggregate
 #' @importFrom utils write.csv
 #' @importFrom tibble rownames_to_column
 #' @export
