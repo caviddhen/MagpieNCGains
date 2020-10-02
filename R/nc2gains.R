@@ -8,9 +8,9 @@
 #' @importFrom  readxl read_xlsx
 #' @importFrom dplyr inner_join mutate
 #' @importFrom tidyr pivot_longer separate
-#' @importFrom data.table setDT
 #' @importFrom methods as
 #' @importFrom utils write.csv
+#' @importFrom tibble rownames_to_column
 #' @export
 
 nc2gains <- function(file){
@@ -39,15 +39,28 @@ df <- pivot_longer(df, c(1:(length(df)-2)), names_to = "year", values_to="value"
 df <- separate(df, col="year", into=c("year", "variable"), sep="_")
 
 #join mapping
-df <- inner_join(df, mapping, by=c("x"="lon","y"="lat"))
+df <- inner_join(df, mapping, by=c("x" = "lon" , "y"="lat"))
 
 #create a split column for the variable by the area share
 df <- mutate(df, split= df$value * df$Share)
 
-#convert to data table as setDT much faster for aggregating
+#aggregate by GAINS  region
 df <- as.data.frame(df)
-df <- setDT(df)[,(value = sum(split)), keyby = 'Idregions,year,variable']
+df <- aggregate(df$split, by=list(year=df$year, variable=df$variable,Idregions=df$Idregions), FUN=sum)
 colnames(df)[4] <- "value"
+
+#check with original rasters
+checka <- as.data.frame(cellStats(b, sum))
+checka <- rownames_to_column(checka)
+  checka[,1] <- gsub("X", "", checka[,1])
+  checka[,1] <- sub("\\.", "_", checka[,1])
+checka <- separate(checka, col="rowname", into=c("year", "variable"), sep="_")
+colnames(checka)[3] <- "original"
+checkb <- aggregate(df$value, by=list(year=df$year, variable=df$variable), FUN=sum)
+check <- inner_join(checka,checkb, by=c("year","variable")) %>%
+  mutate(diff = ((check$x - check$original)/check$original*100))
+avg_diff <- mean(check$diff)
+cat(paste0("Difference in global total by year and by variable is average ", round(avg_diff,2),"%"))
 #save as file.csv
 write.csv(df, file=paste0(gsub("(.*?)\\..*", "\\1", file),"_GAINS",".csv"))
 return(df)
