@@ -1,0 +1,19 @@
+Package: MagpieNCGains
+Title: Easy conversion MAgPIE nc to GAINS mapping
+Version: 0.0.0.9000
+Authors@R: 
+    person("David Meng-Chuen",  "Chen", email = "david.chen@pik-potsdam.de", role = c("aut","cre"))
+Description: Converts NC generated from MAgPIE outputs to GAINS mapping.
+License: GPL-3 
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports:
+    dplyr,
+    ncdf4,
+    raster,
+    data.table,
+    tidyr,
+    readxl,
+    methods
