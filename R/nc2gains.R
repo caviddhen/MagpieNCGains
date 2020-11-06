@@ -15,6 +15,7 @@
 #' @importFrom tibble rownames_to_column
 #' @export
 
+
 nc2gains <- function(file, check = TRUE){
 
 #getmapping
@@ -68,5 +69,5 @@ cat(paste0("Difference in global total by year and by variable is average ", rou
 }
 #save as file.csv
 write.csv(df, file=paste0(gsub("(.*?)\\..*", "\\1", file),"_GAINS",".csv"))
-return(df)
+
 }
