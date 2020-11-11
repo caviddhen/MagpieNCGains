@@ -1,6 +1,6 @@
 # Easy conversion MAgPIE nc to GAINS mapping
 
-R package **MagpieNCGains**, version **1.0.0**
+R package **MagpieNCGains**, version **1.0.2**
 
   
 
@@ -39,7 +39,7 @@ In case of questions / problems please contact David Meng-Chuen Chen <david.chen
 To cite package **MagpieNCGains** in publications use:
 
 Chen D (2020). _MagpieNCGains: Easy conversion MAgPIE nc to GAINS
-mapping_. R package version 1.0.0.
+mapping_. R package version 1.0.2.
 
 A BibTeX entry for LaTeX users is
 
@@ -48,7 +48,7 @@ A BibTeX entry for LaTeX users is
   title = {MagpieNCGains: Easy conversion MAgPIE nc to GAINS mapping},
   author = {David Meng-Chuen Chen},
   year = {2020},
-  note = {R package version 1.0.0},
+  note = {R package version 1.0.2},
 }
 ```
 

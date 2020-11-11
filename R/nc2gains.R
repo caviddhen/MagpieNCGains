@@ -68,6 +68,6 @@ avg_diff <- mean(check$diff,na.rm=T)
 cat(paste0("Difference in global total by year and by variable is average ", round(avg_diff,2),"%"))
 }
 #save as file.csv
-write.csv(df, file=paste0(gsub("(.*?)\\..*", "\\1", file),"_GAINS",".csv"))
+write.csv(df, file=paste0(gsub(".nc", "", file),"_GAINS",".csv"))
 
 }

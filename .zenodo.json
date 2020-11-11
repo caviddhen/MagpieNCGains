@@ -1,6 +1,6 @@
 {
   "title": "MagpieNCGains: Easy conversion MAgPIE nc to GAINS mapping",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "<p>Converts NC generated from MAgPIE outputs to GAINS mapping.<\/p>",
   "creators": [
     {
